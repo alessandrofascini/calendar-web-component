@@ -190,7 +190,7 @@ function toISODate(date) {
     return `${year}-${pl(month)}-${pl(day)}`;
 }
 
-export class DayDatePicker extends HTMLElement {
+class DayDatePicker extends HTMLElement {
     selected;
     constructor() {
         super();
@@ -356,4 +356,10 @@ export class DayDatePicker extends HTMLElement {
             });
         });
     }
+}
+
+customElements.define("day-date-picker", DayDatePicker);
+
+export {
+    DayDatePicker,
 }
