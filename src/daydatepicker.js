@@ -190,17 +190,30 @@ function toISODate(date) {
     return `${year}-${pl(month)}-${pl(day)}`;
 }
 
-class DayDatePicker extends HTMLElement {
-    selected;
+class DayDatePickerComponent extends HTMLElement {
+    selected = (() => {
+        const today = new Date();
+        return {
+            year: today.getFullYear(),
+            month: today.getMonth(),
+            day: today.getDate(),
+            isSelected: true,
+        }
+    })();
+
     constructor() {
         super();
-    }
-
-    connectedCallback() {
+        console.log("constructor");
         this.shadow = this.attachShadow({
             mode: "open",
         });
         this.shadow.adoptedStyleSheets = [sheet];
+    }
+
+    connectedCallback() {
+
+        console.log("Init del calendario");
+
         const m = this.getAttribute(ATTRIBUTE_MONTH);
         if (m == null) {
             this.setAttribute(ATTRIBUTE_MONTH, `${new Date().getMonth()}`);
@@ -209,17 +222,10 @@ class DayDatePicker extends HTMLElement {
         if (y == null) {
             this.setAttribute(ATTRIBUTE_YEAR, `${new Date().getFullYear()}`)
         }
-
-        this.selected = (() => {
-            const today = new Date();
-            return {
-                year: today.getFullYear(),
-                month: today.getMonth(),
-                day: today.getDate(),
-                isSelected: true,
-            }
-        })();
+        console.log(m, y);
         this.render();
+
+        console.log("after render");
     }
 
     static get observedAttributes() {
@@ -301,7 +307,8 @@ class DayDatePicker extends HTMLElement {
                         </div>`
             })
             .join("");
-        this.shadow.innerHTML = `<div class="calendar">
+            console.log("hello");
+            this.shadow.innerHTML = `<div class="calendar">
             <slot name="header" class="calendar-header"></slot> 
             <main class="mini-calendar">
                 <div class="month-header">
@@ -333,29 +340,37 @@ class DayDatePicker extends HTMLElement {
             </main>
             <slot name="footer" class="calendar-footer"></slot>
         </div>`;
-        const prevBtn = this.shadow.querySelector("#prevMonth");
-        prevBtn.addEventListener("click", () => {
-            this.prevMonth();
-        });
-        const nextMonth = this.shadow.querySelector("#nextMonth");
+        // console.log(this.shadow);
+         const prevBtn = this.shadow.querySelector("#prevMonth");
+         console.log(prevBtn);
+         if(prevBtn !== null) {
+             prevBtn.addEventListener("click", () => {
+                 this.prevMonth();
+             });
+         }
+         const nextMonth = this.shadow.querySelector("#nextMonth");
+        if (nextMonth !== null)  {
+             nextMonth.addEventListener("click", () => {
+                 this.nextMonth();
+             });
+         }
+            
 
-        nextMonth.addEventListener("click", () => {
-            this.nextMonth();
-        });
-
-        monthDays.forEach(d => {
-            const id = toISODate(d);
+         monthDays.forEach(d => {
+             const id = toISODate(d);
             const el = this.shadow.getElementById(id);
-            el.addEventListener("click", () => {
+             el.addEventListener("click", () => {
                 const event = new CustomEvent("changeSelected", {
                     detail: d,
-                }, d);
-                this.selected = {...d};
-                this.dispatchEvent(event);
-                this.render();
+                 }, d);
+                 this.selected = {...d};
+                 this.dispatchEvent(event);
+                 this.render();
             });
-        });
+         });
     }
 }
 
-customElements.define("day-date-picker", DayDatePicker);
+// customElements.define("day-date-picker", DayDatePicker);
+customElements.define('day-date-picker', DayDatePickerComponent);
+  
