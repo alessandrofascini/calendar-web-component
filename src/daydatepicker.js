@@ -301,7 +301,8 @@ class DayDatePickerComponent extends HTMLElement {
         const monthDaysView = monthDays
             .map(d => {
                 const id = toISODate(d);
-                return `<div class="ddp" style="${this._styleFactory(d) || 'color: #475569'}" id="${id}">
+                const style = this._styleFactory(d);
+                return `<div class="ddp" style="${this._styleFactory(d) || 'color: #475569;'}" id="${id}">
                             <div class="number">${d.day}</div>
                             <div class="dot"></div>
                         </div>`
@@ -345,18 +346,32 @@ class DayDatePickerComponent extends HTMLElement {
          console.log(prevBtn);
          if(prevBtn !== null) {
              prevBtn.addEventListener("click", () => {
-                 this.prevMonth();
-             });
+                this.prevMonth();
+                const event = new CustomEvent("changeMonth", {
+                    detail: {
+                        month: this.month,
+                        year: this.year
+                    }
+                });
+                this.dispatchEvent(event);
+            });
          }
          const nextMonth = this.shadow.querySelector("#nextMonth");
         if (nextMonth !== null)  {
-             nextMonth.addEventListener("click", () => {
-                 this.nextMonth();
-             });
+            nextMonth.addEventListener("click", () => {
+                this.nextMonth();
+                const event = new CustomEvent("changeMonth", {
+                    detail: {
+                        month: this.month,
+                        year: this.year
+                    }
+                });
+                this.dispatchEvent(event);
+            });
          }
             
 
-         monthDays.forEach(d => {
+        monthDays.forEach(d => {
              const id = toISODate(d);
             const el = this.shadow.getElementById(id);
              el.addEventListener("click", () => {
@@ -367,7 +382,7 @@ class DayDatePickerComponent extends HTMLElement {
                  this.dispatchEvent(event);
                  this.render();
             });
-         });
+        });
     }
 }
 
