@@ -194,6 +194,9 @@ class DayDatePicker extends HTMLElement {
     selected;
     constructor() {
         super();
+    }
+
+    connectedCallback() {
         this.shadow = this.attachShadow({
             mode: "open",
         });
@@ -216,9 +219,6 @@ class DayDatePicker extends HTMLElement {
                 isSelected: true,
             }
         })();
-    }
-
-    connectedCallback() {
         this.render();
     }
 
@@ -359,7 +359,3 @@ class DayDatePicker extends HTMLElement {
 }
 
 customElements.define("day-date-picker", DayDatePicker);
-
-export {
-    DayDatePicker,
-}
