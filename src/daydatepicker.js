@@ -203,7 +203,7 @@ class DayDatePickerComponent extends HTMLElement {
 
     constructor() {
         super();
-        console.log("constructor");
+        // console.log("constructor");
         this.shadow = this.attachShadow({
             mode: "open",
         });
@@ -212,7 +212,7 @@ class DayDatePickerComponent extends HTMLElement {
 
     connectedCallback() {
 
-        console.log("Init del calendario");
+        // console.log("Init del calendario");
 
         const m = this.getAttribute(ATTRIBUTE_MONTH);
         if (m == null) {
@@ -222,10 +222,10 @@ class DayDatePickerComponent extends HTMLElement {
         if (y == null) {
             this.setAttribute(ATTRIBUTE_YEAR, `${new Date().getFullYear()}`)
         }
-        console.log(m, y);
+        // console.log(m, y);
         this.render();
 
-        console.log("after render");
+        // console.log("after render");
     }
 
     static get observedAttributes() {
@@ -308,7 +308,7 @@ class DayDatePickerComponent extends HTMLElement {
                         </div>`
             })
             .join("");
-            console.log("hello");
+            // console.log("hello");
             this.shadow.innerHTML = `<div class="calendar">
             <slot name="header" class="calendar-header"></slot> 
             <main class="mini-calendar">
@@ -343,7 +343,7 @@ class DayDatePickerComponent extends HTMLElement {
         </div>`;
         // console.log(this.shadow);
          const prevBtn = this.shadow.querySelector("#prevMonth");
-         console.log(prevBtn);
+        //  console.log(prevBstn);
          if(prevBtn !== null) {
              prevBtn.addEventListener("click", () => {
                 this.prevMonth();
